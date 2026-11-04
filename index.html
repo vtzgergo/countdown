@@ -7,7 +7,6 @@
       margin: 0;
       padding: 0;
       background: transparent;
-      color: #ffffff;
       font-family: 'Inter', 'Segoe UI', sans-serif;
       font-weight: 700;
       display: flex;
@@ -25,12 +24,16 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      color: #c43b9d; /* Alapértelmezett szín (óra, perc, mp) */
+    }
+    .unit.days {
+      color: #523284; /* Napok színe */
     }
     .label {
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 1px;
-      opacity: 0.7;
+      opacity: 0.85;
       font-weight: 500;
       margin-top: -2px;
     }
@@ -40,14 +43,19 @@
   <div class="timer" id="timer"></div>
   <script>
     // Állítsd be a céldátumot (ÉÉÉÉ-HH-NNTHH:MM:SS format)
-    const targetDate = new Date("2026-11-19T00:00:00").getTime();
+    const targetDate = new Date("2026-12-31T20:00:00").getTime();
 
     function updateTimer() {
       const now = new Date().getTime();
       const diff = targetDate - now;
 
       if (diff <= 0) {
-        document.getElementById("timer").innerHTML = "0 00 00 00";
+        document.getElementById("timer").innerHTML = `
+          <div class="unit days"><span>0d</span><div class="label">nap</div></div>
+          <div class="unit"><span>00h</span><div class="label">óra</div></div>
+          <div class="unit"><span>00m</span><div class="label">perc</div></div>
+          <div class="unit"><span>00s</span><div class="label">mp</div></div>
+        `;
         return;
       }
 
@@ -57,7 +65,7 @@
       const s = Math.floor((diff % (1000 * 60)) / 1000);
 
       document.getElementById("timer").innerHTML = `
-        <div class="unit"><span>${d}d</span><div class="label">nap</div></div>
+        <div class="unit days"><span>${d}d</span><div class="label">nap</div></div>
         <div class="unit"><span>${String(h).padStart(2, '0')}h</span><div class="label">óra</div></div>
         <div class="unit"><span>${String(m).padStart(2, '0')}m</span><div class="label">perc</div></div>
         <div class="unit"><span>${String(s).padStart(2, '0')}s</span><div class="label">mp</div></div>
