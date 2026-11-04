@@ -24,10 +24,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      color: #c43b9d; /* Alapértelmezett szín (óra, perc, mp) */
+      color: #523284; /* Óra, perc, mp színe */
     }
     .unit.days {
-      color: #523284; /* Napok színe */
+      color: #c43b9d; /* Napok színe */
     }
     .label {
       font-size: 11px;
@@ -51,10 +51,10 @@
 
       if (diff <= 0) {
         document.getElementById("timer").innerHTML = `
-          <div class="unit days"><span>0d</span><div class="label">nap</div></div>
-          <div class="unit"><span>00h</span><div class="label">óra</div></div>
-          <div class="unit"><span>00m</span><div class="label">perc</div></div>
-          <div class="unit"><span>00s</span><div class="label">mp</div></div>
+          <div class="unit days"><span>0</span><div class="label">nap</div></div>
+          <div class="unit"><span>00</span><div class="label">óra</div></div>
+          <div class="unit"><span>00</span><div class="label">perc</div></div>
+          <div class="unit"><span>00</span><div class="label">mp</div></div>
         `;
         return;
       }
@@ -65,10 +65,10 @@
       const s = Math.floor((diff % (1000 * 60)) / 1000);
 
       document.getElementById("timer").innerHTML = `
-        <div class="unit days"><span>${d}d</span><div class="label">nap</div></div>
-        <div class="unit"><span>${String(h).padStart(2, '0')}h</span><div class="label">óra</div></div>
-        <div class="unit"><span>${String(m).padStart(2, '0')}m</span><div class="label">perc</div></div>
-        <div class="unit"><span>${String(s).padStart(2, '0')}s</span><div class="label">mp</div></div>
+        <div class="unit days"><span>${d}</span><div class="label">nap</div></div>
+        <div class="unit"><span>${String(h).padStart(2, '0')}</span><div class="label">óra</div></div>
+        <div class="unit"><span>${String(m).padStart(2, '0')}</span><div class="label">perc</div></div>
+        <div class="unit"><span>${String(s).padStart(2, '0')}</span><div class="label">mp</div></div>
       `;
     }
     setInterval(updateTimer, 1000);
