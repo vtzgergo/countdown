@@ -1,174 +1,79 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GTA VI Countdown</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Montserrat, sans-serif;
-    background: transparent;
-    color: white;
-}
-
-.container {
-    width: 95%;
-    max-width: 800px;
-    text-align: center;
-}
-
-/* GTA VI LOGO */
-
-.logo {
-    font-size: clamp(90px, 16vw, 155px);
-    font-weight: 900;
-    letter-spacing: -12px;
-    line-height: 1;
-    margin-bottom: 45px;
-}
-
-.gta {
-    color: #ffffff;
-}
-
-.vi {
-    background: linear-gradient(135deg, #ffc5e3, #f16eae, #a66cff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-/* COUNTDOWN */
-
-.countdown {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-}
-
-.unit {
-    padding: 20px 5px;
-    border-bottom: 2px solid rgba(255,112,183,.65);
-}
-
-.number {
-    font-size: clamp(32px, 7vw, 65px);
-    font-weight: 900;
-    letter-spacing: -3px;
-    font-variant-numeric: tabular-nums;
-    color: white;
-}
-
-.label {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: #d6b4ce;
-    margin-top: 10px;
-}
-
-@media(max-width: 500px) {
-    .logo {
-        letter-spacing: -7px;
-        margin-bottom: 35px;
+  <meta charset="UTF-8">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      font-weight: 700;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      
+      text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.85);
     }
-
-    .countdown {
-        gap: 5px;
+    .timer {
+      display: flex;
+      gap: 16px;
+      font-size: 36px;
     }
-
     .unit {
-        padding: 15px 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #523284; /* Óra, perc, mp színe */
     }
-
-    .number {
-        font-size: clamp(27px, 7vw, 38px);
-        letter-spacing: -1px;
+    .unit.days {
+      color: #c43b9d; /* Napok színe */
     }
-
     .label {
-        font-size: 7px;
-        letter-spacing: 1px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.85;
+      font-weight: 500;
+      margin-top: -2px;
     }
-}
-</style>
+  </style>
 </head>
-
 <body>
+  <div class="timer" id="timer"></div>
+  <script>
+    // Állítsd be a céldátumot (ÉÉÉÉ-HH-NNTHH:MM:SS format)
+    const targetDate = new Date("2026-11-19T00:00:00").getTime();
+    // Told mar fel
+    function updateTimer() {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
 
-<div class="container">
-
-    <div class="logo">
-        <span class="gta">GTA</span><span class="vi"> VI</span>
-    </div>
-
-    <div class="countdown" id="countdown">
-
-        <div class="unit">
-            <div class="number" id="days">00</div>
-            <div class="label">DAYS</div>
-        </div>
-
-        <div class="unit">
-            <div class="number" id="hours">00</div>
-            <div class="label">HOURS</div>
-        </div>
-
-        <div class="unit">
-            <div class="number" id="minutes">00</div>
-            <div class="label">MINUTES</div>
-        </div>
-
-        <div class="unit">
-            <div class="number" id="seconds">00</div>
-            <div class="label">SECONDS</div>
-        </div>
-
-    </div>
-
-</div>
-
-<script>
-const target = new Date("2026-11-18T22:00:00Z").getTime();
-
-function update() {
-    const diff = target - Date.now();
-
-    if (diff <= 0) {
-        document.getElementById("countdown").innerHTML =
-            "<div style='grid-column:1/-1;font-size:35px;font-weight:900'>GTA VI IS HERE!</div>";
+      if (diff <= 0) {
+        document.getElementById("timer").innerHTML = `
+          <div class="unit days"><span>0</span><div class="label">nap</div></div>
+          <div class="unit"><span>00</span><div class="label">óra</div></div>
+          <div class="unit"><span>00</span><div class="label">perc</div></div>
+          <div class="unit"><span>00</span><div class="label">mp</div></div>
+        `;
         return;
+      }
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById("timer").innerHTML = `
+        <div class="unit days"><span>${d}</span><div class="label">nap</div></div>
+        <div class="unit"><span>${String(h).padStart(2, '0')}</span><div class="label">óra</div></div>
+        <div class="unit"><span>${String(m).padStart(2, '0')}</span><div class="label">perc</div></div>
+        <div class="unit"><span>${String(s).padStart(2, '0')}</span><div class="label">mp</div></div>
+      `;
     }
-
-    const values = {
-        days: Math.floor(diff / 86400000),
-        hours: Math.floor(diff / 3600000) % 24,
-        minutes: Math.floor(diff / 60000) % 60,
-        seconds: Math.floor(diff / 1000) % 60
-    };
-
-    for (const key in values) {
-        document.getElementById(key).textContent =
-            String(values[key]).padStart(2, "0");
-    }
-}
-
-update();
-setInterval(update, 1000);
-</script>
-
+    setInterval(updateTimer, 1000);
+    updateTimer();
+  </script>
 </body>
 </html>
